@@ -69,7 +69,7 @@ function dismissButton(){
 }
 
 function videoRedirect() {
-  window.location.href = "https://media.giphy.com/media/gYkga3bZav66I/giphy.gif";
+  window.location.href = "https://vimeo.com/241888886";
 
 }
 function draw() {
