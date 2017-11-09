@@ -69,7 +69,7 @@ function dismissButton(){
 }
 
 function videoRedirect() {
-  window.location.href = "/#about";
+  window.location.href = "./#about";
 
 }
 function draw() {
