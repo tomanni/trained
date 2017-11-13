@@ -123,7 +123,7 @@
 					</div> -->
 					<h3 class="align-center" id="emotion">Please look into your camera and click Start Reconditioning.</h3>
 				<div id="controls">
-					<input class="btn" type="button" value="wait, loading video" disabled="disabled" onclick="startVideo()" id="startbutton"></input>
+					<input class="btn" type="button" value="Start Reconditioning" onclick="startVideo()" id="startbutton"></input>
 				</div>
 				<script>
 					var vid = document.getElementById('videoel');
@@ -184,25 +184,10 @@
 						alert("There was some problem trying to fetch video from your webcam. If you have a webcam, please make sure to accept when the browser asks for access to your webcam.");
 					}
 
-					navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-					window.URL = window.URL || window.webkitURL || window.msURL || window.mozURL;
 
-					// check for camerasupport
-					if (navigator.mediaDevices) {
-						navigator.mediaDevices.getUserMedia({
-							video: true
-						}).then(gumSuccess).catch(gumFail);
-					} else if (navigator.getUserMedia) {
-						navigator.getUserMedia({
-							video: true
-						}, gumSuccess, gumFail);
-					} else {
-						alert("The Emotion Reconditioning demo depends on getUserMedia, which your browser does not seem to support. If you'd like to undergo emotional reconditioning please use Google Chrome, otherwise enjoy the rest of the website!");
-					}
-
-					vid.addEventListener('canplay', enablestart, false);
 
 					/*********** setup of emotion detection *************/
+					vid.addEventListener('canplay', enablestart, false);
 
 					// set eigenvector 9 and 11 to not be regularized. This is to better detect motion of the eyebrows
 					pModel.shapeModel.nonRegularizedVectors.push(9);
@@ -215,12 +200,33 @@
 					var trackingStarted = false;
 
 					function startVideo() {
+
+						// Ask for permissions
+
+						navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+						window.URL = window.URL || window.webkitURL || window.msURL || window.mozURL;
+
+						// check for camerasupport
+						if (navigator.mediaDevices) {
+							navigator.mediaDevices.getUserMedia({
+								video: true
+							}).then(gumSuccess).catch(gumFail);
+						} else if (navigator.getUserMedia) {
+							navigator.getUserMedia({
+								video: true
+							}, gumSuccess, gumFail);
+						} else {
+							alert("The Emotion Reconditioning demo depends on getUserMedia, which your browser does not seem to support. If you'd like to undergo emotional reconditioning please use Google Chrome, otherwise enjoy the rest of the website!");
+						}
+
 						var startbutton = document.getElementById('controls');
 						startbutton.style.visiblity = 'hidden';
 						// start video
 						timer = setTimeout(function() {
-
-							ctrack.stop();
+							vid.pause();
+						  vid.src = "";
+						  // localstream.getTracks()[0].stop();
+						  console.log("Vid off");							ctrack.stop();
 							ctrack.reset();
 							trackingStarted = false;
 							// document.getElementById('gears').style.visiblity = 'hidden'
